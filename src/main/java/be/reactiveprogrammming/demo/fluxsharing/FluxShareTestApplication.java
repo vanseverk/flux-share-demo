@@ -12,11 +12,11 @@ public class FluxShareTestApplication {
   }
 
   private static void fluxShareMultipleSubscribers(int numberOfSubscriptions) throws InterruptedException {
-    Flux<Long> startFlux = Flux.interval(Duration.ofMillis(1000));
-
+    Flux<Long> startFlux = Flux.interval(Duration.ofMillis(1000)).share();
+    
     for (int i = 0; i < numberOfSubscriptions; i++) {
       final int subscriptionNumber = i;
-      Flux outputFlux = startFlux.share();
+      Flux outputFlux = Flux.from(startFlux);
       outputFlux.subscribe(out -> System.out.println("Flux " + subscriptionNumber + " " + out));
     }
 
